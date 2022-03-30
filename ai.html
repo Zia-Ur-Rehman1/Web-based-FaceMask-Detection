@@ -1,0 +1,211 @@
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"> </script>
+
+    <link rel="stylesheet" href="ai.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Bootstrap CSS library -->
+  
+    <title>AI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+	<!-- load ml5.js -->
+	<script src="https://unpkg.com/ml5@0.1.1/dist/ml5.min.js"></script>
+<!-- Loding Module -->
+
+<!-- <script src='test.js' ></script> -->
+
+<script>
+    async function loadModel() {
+      model = undefined;
+    
+      model = await tf.loadLayersModel("http://127.0.0.1:5500//model.json");
+     
+
+      console.log("model loaded")
+    }
+    loadModel();
+
+function preprocessing(img)
+{
+
+      let tensor = tf.browser.fromPixels(img).mean(2).expandDims(0).expandDims(-1);
+      const resized = tf.image.resizeBilinear(tensor, [100, 100]);
+      const offset = tf.scalar(255.0);
+      const normalized  = resized.div(offset);
+      console.log(normalized);
+      return normalized
+
+}
+
+    function make_prediction() {
+    var imgData = document.getElementById('thumb');
+    var class_names = ['Wwithout Mask','Mask']
+    var pred = model.predict(preprocessing(imgData)).dataSync()
+    console.log(pred)          
+    if(pred[0]>pred[1]){
+      document.getElementById('answer').value = "No Mask Detected";
+      console.log("  NO Mask Detected");
+    }  
+    else{
+      document.getElementById('answer').value = "Mask Detected";
+      console.log("Mask Detected");
+    }
+    }
+  var loadFile = function(event) {
+	var image = document.getElementById('thumb');
+	image.src = URL.createObjectURL(event.target.files[0]);
+  }
+  </script>
+    
+</head>
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+<!-- First Container -->
+
+    <div class="container">
+        <div >
+            <img src="1.jpg" class="img-fluid h-50" >
+        </div>
+        <div>
+                <h1 class="text-uppercase text-warning text-center mb-5 font-weight-bold">Around the world in <a class="text-white">80</a>  minutes</h1>
+            
+                <h2 class="text-white">Table Of Contents</h2>
+
+                <ol class="text-white">
+                  <li>Web Developer</li>
+                  <li>HTML</li>
+                  <li>CSS</li>
+                  <li>JavaScript</li>
+                </ol> 
+            </div> 
+            <hr style="border: 1px solid gray">
+            <div class="text-white">
+                <h2 class=" text-warning font-weight-bold">Web Development</h2>
+                <p>Web Development is the building and maintenance of websites, it is the work that happens behind the scene to make the website look greater, work fast and perform well with seamless user experience</p>
+            </div>
+            <hr style="border: 1px solid gray">
+            <div class="text-white">
+                <h2 class=" text-warning font-weight-bold">HTML</h2>
+                <p>Hyper text markup language.<br>HTML is the standard languagefor documents designed to be displayed in a web browser.</p>
+            </div>
+            <hr style="border: 1px solid gray">
+            <div class="text-white">
+                <h2 class=" text-warning font-weight-bold ">CSS</h2>
+            <p>Stands for <a class="text-warning font-italic">Cascading Style Sheet,</a> it is a style sheet language used to shape the HTML elements that will be displayed in the browser as a web page</p>    
+            </div>
+            <div class="text-white">
+                <h2 class=" text-warning font-weight-bold">Operating System in no particular order</h2>
+                <ul>
+                    <li>Windows OS</li>
+                    <li>MAC OS</li>
+                    <li>Android OS</li>
+                    <li>LINUX</li>
+                
+                </ul>
+            </div>
+            <div class="text-white mt-4 mb-4">
+                <h2 class="text-warning font-weight-bold">Famous websites</h2>
+                <ol class="text-white ">
+                    <li><a href="http://www.google.com" class='text-white'><u>Google</u></a></li>
+                    <li><a href="http://www.youtube.com" class='text-white'><u>Youtube</u></a></li>
+                    <li><a href="http://www.techworld.com" class='text-white'><u>Techno World</u></a></li>
+                    <li><a href="http://www.wordpress.com" class='text-white'><u>WordPress</u></a></li>
+                </ol> 
+            </div>
+            <div>
+            <table class="table table-bordered">
+            <tr class='text-warning'>
+                <th colspan="2" class="text-center">E learning</th>
+                <th>Domain</th>
+                <th>Discription</th>
+            </tr>
+            <tr class='text-white'>
+                <td>Technical</td>
+                <td>WordPress,Web Development,CSS,etc</td>
+            </tr>
+            <tr class='text-white'>
+                <td>Non-Technical</td>
+                <td>Contact Marketing,Marketing Funnels,etc</td>
+            </tr>
+            <tr class='text-white'>
+                <td>Creative Design</td>
+                <td>Logo Design, Corporate Identity Kit,etc</td>
+            </tr>
+         
+            </table>
+            </div>
+          
+       
+     <center>
+ <div class="header">
+  <h1 class="text-white">Face Mask Detector</h1>
+</div> 
+  <p><input type="file"  accept="image/*" name="image" id="file"  onchange="loadFile(event)" style="display: none;"></p>
+  <button><label for="file" style="cursor: pointer;">Upload Image</label></button>
+<p><img id="thumb" width="300" height = "300"/></p>
+  <center>
+    <p class='text-white'>Click to see the magic</p>
+    
+  </center>
+  <center><button onclick="make_prediction()">Make Mask Prediction</button><input id="answer"></center>
+ 
+  <center></center>
+  <br> <br>
+  
+</body>
+
+</div>
+   
+<!-- Main Container -->
+     
+    
+
+
+
+
+
+
+
+
+
+
+
+     
+
+
+
+<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<footer class=' footer bg-dark text-white  '>
+<center>
+  <p>Zia Ur Rehman<br> Roll No:1802034<br> Department:Computer Science<br>
+  <a href="email:zia2018@namal.edu.pk">zia2018@namal.edu.pk</a></p>
+  </center>
+</footer>
+</body>
+<!-- Java Script -->
+
+
+
+</html>
