@@ -1,7 +1,8 @@
 # face-mask-detection-keras
-
+This was a semester project of Artificial Intelligence in sixth semester.
 This project is implemented in Python using Keras, Tensorflow and OpenCV.
-In order to integrate with web page h5 file is embeded with javascript
+In order to integrate with web page h5 file is embeded with javascript.
+
 ## Demo https://youtu.be/oNcrpbqnpvY
 
 ## Credits and Links
